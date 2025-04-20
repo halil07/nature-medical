@@ -1,0 +1,1952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitki Etkinlik Rehberi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            color: #0056b3;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        .category-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 4px;
+        }
+        .category-section h3 {
+            margin-top: 0;
+            color: #fff;
+            padding: 8px;
+            border-radius: 4px;
+        }
+        .category-section ul {
+            list-style: disc;
+            padding-left: 20px;
+        }
+        .category-section li {
+            margin-bottom: 5px;
+        }
+        .category-yok { background-color: #e74c3c; }
+        .category-etkili { background-color: #f39c12; }
+        .category-cok-etkili { background-color: #2ecc71; }
+        .category-yardimci { background-color: #3498db; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bitki Etkinlik Rehberi</h1>
+
+        <label for="condition-select" class="block text-gray-700 text-sm font-bold mb-2">Bir Sağlık Durumu Seçin:</label>
+        <select id="condition-select" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            <option value="">Lütfen Seçiniz</option>
+            </select>
+
+        <div id="results" class="hidden">
+            <div id="cok-etkili-section" class="category-section category-cok-etkili">
+                <h3>Çok Etkili</h3>
+                <ul id="cok-etkili-list"></ul>
+            </div>
+
+            <div id="etkili-section" class="category-section category-etkili">
+                <h3>Etkili</h3>
+                <ul id="etkili-list"></ul>
+            </div>
+
+            <div id="yardimci-section" class="category-section category-yardimci">
+                <h3>Yardımcı</h3>
+                <ul id="yardimci-list"></ul>
+            </div>
+
+            <div id="yok-section" class="category-section category-yok">
+                <h3>Yok</h3>
+                <ul id="yok-list"></ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data from the uploaded file
+        const healthData = [
+          {
+            "ID": "ADET - MENOPOZ - KADIN HASTALIKLARI",
+            "Yok": [
+              "BİBERİYE",
+              "CİVAN PERÇEMİ",
+              "COREK OTU",
+              "ÇÖP OTU",
+              "DAMAR OTU",
+              "DEVE DİKENİ",
+              "EKİNEZYA",
+              "ENGİNAR YAPRAĞI",
+              "GİLABURU MEYVESİ",
+              "GİNKO BİLOBA",
+              "GİNSENG",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "HİNDİBA",
+              "KARABAŞ OTU",
+              "KIRKKİLİT OTU",
+              "KIRMIZI PANCAR",
+              "KUDRET NARI",
+              "MEYAN KÖKÜ",
+              "REİSHİ MANTARI",
+              "SARI KANTARON",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ",
+              "YABAN MERSİNİ",
+              "ZENCEFİL KÖKÜ",
+              "ZERDEÇAL KÖKÜ",
+              "ZEYTİN YAPRAĞİ"
+            ],
+            "Etkili": [],
+            "Çok Etkili": [
+              "ALIÇ MEYVESİ",
+              "AYNI SAFA",
+              "HAYIT MEYVESİ"
+            ],
+            "Yardimci": []
+          },
+          {
+            "ID": "AİDS - HIV VİRÜSÜ",
+            "Yok": [
+              "ALIÇ MEYVESİ",
+              "AYNI SAFA",
+              "BİBERİYE",
+              "CİVAN PERÇEMİ",
+              "ÇÖP OTU",
+              "DAMAR OTU",
+              "ENGİNAR YAPRAĞI",
+              "GİLABURU MEYVESİ",
+              "GİNKO BİLOBA",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "HAYIT MEYVESİ",
+              "HİNDİBA",
+              "KARABAŞ OTU",
+              "KIRKKİLİT OTU",
+              "KIRMIZI PANCAR",
+              "KUDRET NARI",
+              "MEYAN KÖKÜ",
+              "SARI KANTARON",
+              "YABAN MERSİNİ",
+              "ZENCEFİL KÖKÜ",
+              "ZERDEÇAL KÖKÜ"
+            ],
+            "Etkili": [
+              "COREK OTU",
+              "DEVE DİKENİ",
+              "EKİNEZYA"
+            ],
+            "Çok Etkili": [
+              "GİNSENG",
+              "REİSHİ MANTARI",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ",
+              "ZEYTİN YAPRAĞİ"
+            ],
+            "Yardimci": []
+          },
+          {
+            "ID": "AKCİĞER HASTALIKLARI",
+            "Yok": [
+              "ALIÇ MEYVESİ",
+              "CİVAN PERÇEMİ",
+              "ÇÖP OTU",
+              "DAMAR OTU",
+              "DEVE DİKENİ",
+              "ENGİNAR YAPRAĞI",
+              "GİLABURU MEYVESİ",
+              "GİNKO BİLOBA",
+              "GİNSENG",
+              "HAYIT MEYVESİ",
+              "HİNDİBA",
+              "KIRKKİLİT OTU",
+              "KIRMIZI PANCAR",
+              "KUDRET NARI",
+              "REİSHİ MANTARI",
+              "SARI KANTARON",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ",
+              "YABAN MERSİNİ"
+            ],
+            "Etkili": [
+              "EKİNEZYA",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "KARABAŞ OTU",
+              "MEYAN KÖKÜ",
+              "ZENCEFİL KÖKÜ",
+              "ZERDEÇAL KÖKÜ"
+            ],
+            "Çok Etkili": [
+              "BİBERİYE",
+              "COREK OTU"
+            ],
+            "Yardimci": [
+              "AYNI SAFA",
+              "ZEYTİN YAPRAĞİ"
+            ]
+          },
+          {
+            "ID": "ALERJİ",
+            "Yok": [
+              "ALIÇ MEYVESİ",
+              "BİBERİYE",
+              "CİVAN PERÇEMİ",
+              "ÇÖP OTU",
+              "DAMAR OTU",
+              "DEVE DİKENİ",
+              "EKİNEZYA",
+              "ENGİNAR YAPRAĞİ",
+              "GİLABURU MEYVESİ",
+              "GİNSENG",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "HAYIT MEYVESİ",
+              "HİNDİBA",
+              "KARABAŞ OTU",
+              "KIRKKİLİT OTU",
+              "KIRMIZI PANCAR",
+              "KUDRET NARI",
+              "SARI KANTARON",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ",
+              "YABAN MERSİNİ",
+              "ZENCEFİL KÖKÜ",
+              "ZERDEÇAL KÖKÜ",
+              "ZEYTİN YAPRAĞİ"
+            ],
+            "Etkili": [
+              "AYNI SAFA",
+              "GİNKO BİLOBA",
+              "REİSHİ MANTARI"
+            ],
+            "Çok Etkili": [
+              "COREK OTU"
+            ],
+            "Yardimci": [
+              "MEYAN KÖKÜ"
+            ]
+          },
+          {
+            "ID": "ALZHEİMER - PARKİNSON",
+            "Yok": [
+              "AYNI SAFA",
+              "BİBERİYE",
+              "CİVAN PERÇEMİ",
+              "COREK OTU",
+              "ÇÖP OTU",
+              "DAMAR OTU",
+              "DEVE DİKENİ",
+              "EKİNEZYA",
+              "ENGİNAR YAPRAĞİ",
+              "GİLABURU MEYVESİ",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "HAYIT MEYVESİ",
+              "HİNDİBA",
+              "KARABAŞ OTU",
+              "KIRKKİLİT OTU",
+              "KIRMIZI PANCAR",
+              "KUDRET NARI",
+              "MEYAN KÖKÜ",
+              "SARI KANTARON",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ",
+              "ZEYTİN YAPRAĞİ"
+            ],
+            "Etkili": [
+              "GİNSENG",
+              "REİSHİ MANTARI",
+              "ZERDEÇAL KÖKÜ"
+            ],
+            "Çok Etkili": [
+              "GİNKO BİLOBA"
+            ],
+            "Yardimci": [
+              "ALIÇ MEYVESİ",
+              "YABAN MERSİNİ",
+              "ZENCEFİL KÖKÜ"
+            ]
+          },
+          {
+            "ID": "ANEMİ - DEMİR EKSİKLİĞİ - KANSIZLIK",
+            "Yok": [
+              "ALIÇ MEYVESİ",
+              "AYNI SAFA",
+              "BİBERİYE",
+              "CİVAN PERÇEMİ",
+              "ÇÖP OTU",
+              "DAMAR OTU",
+              "EKİNEZYA",
+              "ENGİNAR YAPRAĞI",
+              "GİNKO BİLOBA",
+              "HAYIT MEYVESİ",
+              "KARABAŞ OTU",
+              "MEYAN KÖKÜ",
+              "REİSHİ MANTARI",
+              "SARI KANTARON",
+              "ZERDEÇAL KÖKÜ",
+              "ZEYTİN YAPRAĞİ"
+            ],
+            "Etkili": [
+              "COREK OTU",
+              "DEVE DİKENİ",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "KUDRET NARI",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ"
+            ],
+            "Çok Etkili": [
+              "GİLABURU MEYVESİ",
+              "HİNDİBA",
+              "KIRMIZI PANCAR",
+              "YABAN MERSİNİ"
+            ],
+            "Yardimci": [
+              "GİNSENG",
+              "KIRKKİLİT OTU",
+              "ZENCEFİL KÖKÜ"
+            ]
+          },
+          {
+            "ID": "ANTİ AGİNG",
+            "Yok": [
+              "BİBERİYE",
+              "CİVAN PERÇEMİ",
+              "COREK OTU",
+              "ÇÖP OTU",
+              "DAMAR OTU",
+              "EKİNEZYA",
+              "ENGİNAR YAPRAĞİ",
+              "HAYIT MEYVESİ",
+              "HİNDİBA",
+              "KARABAŞ OTU",
+              "KIRKKİLİT OTU",
+              "KIRMIZI PANCAR",
+              "SARI KANTARON",
+              "ZENCEFİL KÖKÜ"
+            ],
+            "Etkili": [
+              "ALIÇ MEYVESİ",
+              "DEVE DİKENİ",
+              "GİLABURU MEYVESİ",
+              "GİNKO BİLOBA",
+              "YABAN MERSİNİ",
+              "ZERDEÇAL KÖKÜ"
+            ],
+            "Çok Etkili": [
+              "GİNSENG",
+              "KUDRET NARI",
+              "REİSHİ MANTARI",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ",
+              "ZEYTİN YAPRAĞİ"
+            ],
+            "Yardimci": [
+              "AYNI SAFA",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "MEYAN KÖKÜ"
+            ]
+          },
+          {
+            "ID": "ASTIM - ÖKSÜRÜK - BRONŞİT - GRİP",
+            "Yok": [
+              "ALIÇ MEYVESİ",
+              "ÇÖP OTU",
+              "ENGİNAR YAPRAĞİ",
+              "GİNKO BİLOBA",
+              "GİNSENG",
+              "HAYIT MEYVESİ",
+              "HİNDİBA",
+              "KIRKKİLİT OTU",
+              "KIRMIZI PANCAR",
+              "REİSHİ MANTARI",
+              "SARI KANTARON",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ"
+            ],
+            "Etkili": [
+              "CİVAN PERÇEMİ",
+              "DAMAR OTU",
+              "GİLABURU MEYVESİ",
+              "KARABAŞ OTU",
+              "MEYAN KÖKÜ"
+            ],
+            "Çok Etkili": [
+              "BİBERİYE",
+              "COREK OTU",
+              "EKİNEZYA",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "ZENCEFİL KÖKÜ",
+              "ZERDEÇAL KÖKÜ",
+              "ZEYTİN YAPRAĞİ"
+            ],
+            "Yardimci": [
+              "AYNI SAFA",
+              "KUDRET NARI",
+              "YABAN MERSİNİ"
+            ]
+          },
+          {
+            "ID": "BAĞIRSAK - BAKTERİ - VİRÜS - KOLİT",
+            "Yok": [
+              "ALIÇ MEYVESİ",
+              "ENGİNAR YAPRAĞİ",
+              "GİLABURU MEYVESİ",
+              "GİNKO BİLOBA",
+              "GİNSENG",
+              "HAYIT MEYVESİ",
+              "KIRKKİLİT OTU",
+              "KIRMIZI PANCAR",
+              "MEYAN KÖKÜ"
+            ],
+            "Etkili": [
+              "ÇÖP OTU",
+              "DAMAR OTU",
+              "REİSHİ MANTARI",
+              "YABAN MERSİNİ",
+              "ZENCEFİL KÖKÜ"
+            ],
+            "Çok Etkili": [
+              "AYNI SAFA",
+              "BİBERİYE",
+              "COREK OTU",
+              "EKİNEZYA",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "HİNDİBA",
+              "KARABAŞ OTU",
+              "SARI KANTARON",
+              "ZERDEÇAL KÖKÜ",
+              "ZEYTİN YAPRAĞİ"
+            ],
+            "Yardimci": [
+              "CİVAN PERÇEMİ",
+              "DEVE DİKENİ",
+              "KUDRET NARI",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ"
+            ]
+          },
+          {
+            "ID": "BASUR - HEMORROİD",
+            "Yok": [
+              "BİBERİYE",
+              "DEVE DİKENİ",
+              "EKİNEZYA",
+              "ENGİNAR YAPRAĞİ",
+              "GİLABURU MEYVESİ",
+              "GİNKO BİLOBA",
+              "GİNSENG",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "HAYIT MEYVESİ",
+              "HİNDİBA",
+              "KARABAŞ OTU",
+              "KIRMIZI PANCAR",
+              "KUDRET NARI",
+              "REİSHİ MANTARI",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ",
+              "ZENCEFİL KÖKÜ",
+              "ZERDEÇAL KÖKÜ",
+              "ZEYTİN YAPRAĞİ"
+            ],
+            "Etkili": [
+              "COREK OTU",
+              "ÇÖP OTU",
+              "DAMAR OTU",
+              "KIRKKİLİT OTU",
+              "SARI KANTARON"
+            ],
+            "Çok Etkili": [
+              "AYNI SAFA",
+              "CİVAN PERÇEMİ"
+            ],
+            "Yardimci": [
+              "ALIÇ MEYVESİ",
+              "MEYAN KÖKÜ",
+              "YABAN MERSİNİ"
+            ]
+          },
+          {
+            "ID": "BAŞ AĞRISI - MİGREN",
+            "Yok": [
+              "ALIÇ MEYVESİ",
+              "AYNI SAFA",
+              "CİVAN PERÇEMİ",
+              "DAMAR OTU",
+              "DEVE DİKENİ",
+              "EKİNEZYA",
+              "ENGİNAR YAPRAĞİ",
+              "GİLABURU MEYVESİ",
+              "GİNSENG",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "HAYIT MEYVESİ",
+              "KIRMIZI PANCAR",
+              "KUDRET NARI",
+              "ZEYTİN YAPRAĞİ"
+            ],
+            "Etkili": [
+              "COREK OTU",
+              "GİNKO BİLOBA",
+              "HİNDİBA",
+              "KARABAŞ OTU",
+              "SARI KANTARON"
+            ],
+            "Çok Etkili": [
+              "BİBERİYE",
+              "ZENCEFİL KÖKÜ"
+            ],
+            "Yardimci": [
+              "ÇÖP OTU",
+              "KIRKKİLİT OTU",
+              "MEYAN KÖKÜ",
+              "REİSHİ MANTARI",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ",
+              "YABAN MERSİNİ",
+              "ZERDEÇAL KÖKÜ"
+            ]
+          },
+          {
+            "ID": "BEHÇET HASTALIĞI",
+            "Yok": [
+              "ALIÇ MEYVESİ",
+              "ÇÖP OTU",
+              "DEVE DİKENİ",
+              "ENGİNAR YAPRAĞİ",
+              "GİLABURU MEYVESİ",
+              "GİNKO BİLOBA",
+              "GİNSENG",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "HAYIT MEYVESİ",
+              "HİNDİBA",
+              "KIRKKİLİT OTU",
+              "KIRMIZI PANCAR",
+              "KUDRET NARI",
+              "REİSHİ MANTARI",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ",
+              "YABAN MERSİNİ",
+              "ZENCEFİL KÖKÜ",
+              "ZERDEÇAL KÖKÜ",
+              "ZEYTİN YAPRAĞİ"
+            ],
+            "Etkili": [
+              "CİVAN PERÇEMİ",
+              "COREK OTU",
+              "DAMAR OTU",
+              "KARABAŞ OTU",
+              "MEYAN KÖKÜ",
+              "SARI KANTARON"
+            ],
+            "Çok Etkili": [
+              "AYNI SAFA"
+            ],
+            "Yardimci": [
+              "BİBERİYE",
+              "EKİNEZYA"
+            ]
+          },
+          {
+            "ID": "BOĞAZ İLTİHABI - ÜST SOLUNUM",
+            "Yok": [
+              "ALIÇ MEYVESİ",
+              "ÇÖP OTU",
+              "DEVE DİKENİ",
+              "GİNKO BİLOBA",
+              "GİNSENG",
+              "HAYIT MEYVESİ",
+              "HİNDİBA",
+              "ENGİNAR YAPRAĞİ",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ"
+            ],
+            "Etkili": [
+              "CİVAN PERÇEMİ",
+              "REİSHİ MANTARI",
+              "SARI KANTARON",
+              "YABAN MERSİNİ"
+            ],
+            "Çok Etkili": [
+              "AYNI SAFA",
+              "BİBERİYE",
+              "COREK OTU",
+              "EKİNEZYA",
+              "GİLABURU MEYVESİ",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "KARABAŞ OTU",
+              "MEYAN KÖKÜ",
+              "ZENCEFİL KÖKÜ",
+              "ZERDEÇAL KÖKÜ",
+              "ZEYTİN YAPRAĞİ"
+            ],
+            "Yardimci": [
+              "DAMAR OTU",
+              "KIRKKİLİT OTU",
+              "KUDRET NARI",
+              "KIRMIZI PANCAR"
+            ]
+          },
+          {
+            "ID": "BÖBREK - MESANE HASTALIKLARI",
+            "Yok": [
+              "ALIÇ MEYVESİ",
+              "ENGİNAR YAPRAĞİ",
+              "GİNKO BİLOBA",
+              "GİNSENG",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "HAYIT MEYVESİ",
+              "KIRMIZI PANCAR",
+              "KUDRET NARI",
+              "MEYAN KÖKÜ",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ"
+            ],
+            "Etkili": [
+              "AYNI SAFA",
+              "CİVAN PERÇEMİ",
+              "ÇÖP OTU",
+              "DAMAR OTU",
+              "GİLABURU MEYVESİ",
+              "KARABAŞ OTU",
+              "REİSHİ MANTARI",
+              "SARI KANTARON",
+              "ZEYTİN YAPRAĞİ"
+            ],
+            "Çok Etkili": [
+              "COREK OTU",
+              "EKİNEZYA",
+              "HİNDİBA",
+              "KIRKKİLİT OTU",
+              "YABAN MERSİNİ"
+            ],
+            "Yardimci": [
+              "BİBERİYE",
+              "DEVE DİKENİ",
+              "ZENCEFİL KÖKÜ",
+              "ZERDEÇAL KÖKÜ"
+            ]
+          },
+          {
+            "ID": "DAMAR PROBLEMLERİ",
+            "Yok": [
+              "AYNI SAFA",
+              "EKİNEZYA",
+              "ENGİNAR YAPRAĞİ",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "HAYIT MEYVESİ",
+              "ZENCEFİL KÖKÜ",
+              "ZERDEÇAL KÖKÜ"
+            ],
+            "Etkili": [
+              "BİBERİYE",
+              "ÇÖP OTU",
+              "DEVE DİKENİ",
+              "GİNSENG",
+              "HİNDİBA",
+              "KIRMIZI PANCAR",
+              "KUDRET NARI",
+              "MEYAN KÖKÜ",
+              "SARI KANTARON"
+            ],
+            "Çok Etkili": [
+              "ALIÇ MEYVESİ",
+              "CİVAN PERÇEMİ",
+              "DAMAR OTU",
+              "GİLABURU MEYVESİ",
+              "GİNKO BİLOBA",
+              "KIRKKİLİT OTU",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ",
+              "YABAN MERSİNİ",
+              "ZEYTİN YAPRAĞİ"
+            ],
+            "Yardimci": [
+              "COREK OTU",
+              "KARABAŞ OTU",
+              "REİSHİ MANTARI"
+            ]
+          },
+          {
+            "ID": "DEPRESYON - KAYGI - PANİK - FOBİ",
+            "Yok": [
+              "ALIÇ MEYVESİ",
+              "DAMAR OTU",
+              "DEVE DİKENİ",
+              "EKİNEZYA",
+              "ENGİNAR YAPRAĞİ",
+              "GİLABURU MEYVESİ",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "KARABAŞ OTU",
+              "KIRKKİLİT OTU",
+              "KIRMIZI PANCAR",
+              "MEYAN KÖKÜ",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ",
+              "YABAN MERSİNİ"
+            ],
+            "Etkili": [
+              "AYNI SAFA",
+              "GİNSENG",
+              "ZENCEFİL KÖKÜ",
+              "ZERDEÇAL KÖKÜ"
+            ],
+            "Çok Etkili": [
+              "BİBERİYE",
+              "HAYIT MEYVESİ",
+              "SARI KANTARON"
+            ],
+            "Yardimci": [
+              "COREK OTU",
+              "ÇÖP OTU",
+              "GİNKO BİLOBA",
+              "HİNDİBA",
+              "KUDRET NARI",
+              "REİSHİ MANTARI"
+            ]
+          },
+          {
+            "ID": "DİYABET",
+            "Yok": [
+              "BİBERİYE",
+              "CİVAN PERÇEMİ",
+              "ÇÖP OTU",
+              "EKİNEZYA",
+              "MEYAN KÖKÜ",
+              "SARI KANTARON",
+              "ZENCEFİL KÖKÜ"
+            ],
+            "Etkili": [
+              "AYNI SAFA",
+              "DEVE DİKENİ",
+              "GİNKO BİLOBA",
+              "KARABAŞ OTU",
+              "REİSHİ MANTARI",
+              "YABAN MERSİNİ"
+            ],
+            "Çok Etkili": [
+              "COREK OTU",
+              "DAMAR OTU",
+              "ENGİNAR YAPRAĞİ",
+              "GİLABURU MEYVESİ",
+              "GİNSENG",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "HİNDİBA",
+              "KIRMIZI PANCAR",
+              "KUDRET NARI",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ",
+              "ZERDEÇAL KÖKÜ",
+              "ZEYTİN YAPRAĞİ"
+            ],
+            "Yardimci": [
+              "ALIÇ MEYVESİ",
+              "HAYIT MEYVESİ",
+              "KIRKKİLİT OTU"
+            ]
+          },
+          {
+            "ID": "EGZAMA - MAYASIL - MANTAR",
+            "Yok": [
+              "ALIÇ MEYVESİ",
+              "DAMAR OTU",
+              "DEVE DİKENİ",
+              "ENGİNAR YAPRAĞİ",
+              "GİLABURU MEYVESİ",
+              "GİNKO BİLOBA",
+              "GİNSENG",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "HAYIT MEYVESİ",
+              "KIRMIZI PANCAR",
+              "MEYAN KÖKÜ",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ"
+            ],
+            "Etkili": [
+              "CİVAN PERÇEMİ",
+              "ÇÖP OTU",
+              "KIRKKİLİT OTU",
+              "REİSHI MANTARI",
+              "YABAN MERSİNİ",
+              "ZENCEFİL KÖKÜ"
+            ],
+            "Çok Etkili": [
+              "AYNI SAFA",
+              "BİBERİYE",
+              "COREK OTU",
+              "EKİNEZYA",
+              "KARABAŞ OTU",
+              "SARI KANTARON",
+              "ZERDEÇAL KÖKÜ",
+              "ZEYTİN YAPRAĞİ"
+            ],
+            "Yardimci": [
+              "HİNDİBA",
+              "KUDRET NARI"
+            ]
+          },
+          {
+            "ID": "ENFEKSİYON HASTALIKLARI",
+            "Yok": [
+              "ALIÇ MEYVESİ",
+              "ENGİNAR YAPRAĞİ",
+              "GİNKO BİLOBA",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "HAYIT MEYVESİ",
+              "HİNDİBA",
+              "KIRMIZI PANCAR"
+            ],
+            "Etkili": [
+              "CİVAN PERÇEMİ",
+              "ÇÖP OTU",
+              "DAMAR OTU",
+              "DEVE DİKENİ",
+              "KUDRET NARI",
+              "MEYAN KÖKÜ"
+            ],
+            "Çok Etkili": [
+              "AYNI SAFA",
+              "BİBERİYE",
+              "COREK OTU",
+              "EKİNEZYA",
+              "GİLABURU MEYVESİ",
+              "GİNSENG",
+              "KARABAŞ OTU",
+              "REİSHİ MANTARI",
+              "SARI KANTARON",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ",
+              "YABAN MERSİNİ",
+              "ZENCEFİL KÖKÜ",
+              "ZERDEÇAL KÖKÜ",
+              "ZEYTİN YAPRAĞİ"
+            ],
+            "Yardimci": [
+              "KIRKKİLİT OTU"
+            ]
+          },
+          {
+            "ID": "FELÇ",
+            "Yok": [
+              "AYNI SAFA",
+              "CİVAN PERÇEMİ",
+              "EKİNEZYA",
+              "ENGİNAR YAPRAĞİ",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "HAYIT MEYVESİ",
+              "HİNDİBA",
+              "MEYAN KÖKÜ",
+              "ZERDEÇAL KÖKÜ"
+            ],
+            "Etkili": [
+              "BİBERİYE",
+              "REİSHİ MANTARI",
+              "SARI KANTARON",
+              "ZENCEFİL KÖKÜ",
+              "KIRMIZI PANCAR"
+            ],
+            "Çok Etkili": [
+              "DAMAR OTU",
+              "GİNKO BİLOBA",
+              "GİNSENG",
+              "KIRKKİLİT OTU",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ",
+              "YABAN MERSİNİ",
+              "ZEYTİN YAPRAĞİ"
+            ],
+            "Yardimci": [
+              "ALIÇ MEYVESİ",
+              "COREK OTU",
+              "ÇÖP OTU",
+              "DEVE DİKENİ",
+              "GİLABURU MEYVESİ",
+              "KARABAŞ OTU",
+              "KUDRET NARI"
+            ]
+          },
+          {
+            "ID": "GÖRME PROBLEMLERİ - KATARAKT",
+            "Yok": [
+              "ALIÇ MEYVESİ",
+              "BİBERİYE",
+              "ÇÖP OTU",
+              "EKİNEZYA",
+              "ENGİNAR YAPRAĞİ",
+              "GİNSENG",
+              "HAYIT MEYVESİ",
+              "KARABAŞ OTU",
+              "MEYAN KÖKÜ",
+              "ZENCEFİL KÖKÜ"
+            ],
+            "Etkili": [
+              "COREK OTU",
+              "DEVE DİKENİ",
+              "GİLABURU MEYVESİ",
+              "GİNKO BİLOBA",
+              "KIRKKİLİT OTU",
+              "REİSHİ MANTARI",
+              "ZEYTİN YAPRAĞİ"
+            ],
+            "Çok Etkili": [
+              "AYNI SAFA",
+              "DAMAR OTU",
+              "HİNDİBA",
+              "KIRMIZI PANCAR",
+              "KUDRET NARI",
+              "SARI KANTARON",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ",
+              "YABAN MERSİNİ",
+              "ZERDEÇAL KÖKÜ"
+            ],
+            "Yardimci": [
+              "CİVAN PERÇEMİ",
+              "HARNUP (KEÇİ BOYNUZU)"
+            ]
+          },
+          {
+            "ID": "GUATR - HİPER TİROİD",
+            "Yok": [
+              "ALIÇ MEYVESİ",
+              "CİVAN PERÇEMİ",
+              "DAMAR OTU",
+              "DEVE DİKENİ",
+              "EKİNEZYA",
+              "ENGİNAR YAPRAĞİ",
+              "GİLABURU MEYVESİ",
+              "GİNKO BİLOBA",
+              "GİNSENG",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "KUDRET NARI",
+              "MEYAN KÖKÜ",
+              "REİSHİ MANTARI",
+              "ZEYTİN YAPRAĞİ"
+            ],
+            "Etkili": [
+              "COREK OTU",
+              "HAYIT MEYVESİ",
+              "ZENCEFİL KÖKÜ",
+              "ZERDEÇAL KÖKÜ"
+            ],
+            "Çok Etkili": [
+              "BİBERİYE",
+              "HİNDİBA",
+              "KIRKKİLİT OTU",
+              "KIRMIZI PANCAR"
+            ],
+            "Yardimci": [
+              "AYNI SAFA",
+              "ÇÖP OTU",
+              "KARABAŞ OTU",
+              "SARI KANTARON",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ",
+              "YABAN MERSİNİ"
+            ]
+          },
+          {
+            "ID": "GUT - ÖDEM",
+            "Yok": [
+              "ALIÇ MEYVESİ",
+              "BİBERİYE",
+              "GİNSENG",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "HAYIT MEYVESİ",
+              "MEYAN KÖKÜ",
+              "ZENCEFİL KÖKÜ",
+              "ZERDEÇAL KÖKÜ"
+            ],
+            "Etkili": [
+              "AYNI SAFA",
+              "COREK OTU",
+              "ÇÖP OTU",
+              "DAMAR OTU",
+              "DEVE DİKENİ",
+              "KARABAŞ OTU",
+              "KIRMIZI PANCAR",
+              "SARI KANTARON",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ",
+              "ZEYTİN YAPRAĞİ"
+            ],
+            "Çok Etkili": [
+              "CİVAN PERÇEMİ",
+              "ENGİNAR YAPRAĞİ",
+              "GİLABURU MEYVESİ",
+              "HİNDİBA",
+              "KIRKKİLİT OTU",
+              "YABAN MERSİNİ"
+            ],
+            "Yardimci": [
+              "BİBERİYE",
+              "EKİNEZYA",
+              "GİNKO BİLOBA",
+              "KUDRET NARI",
+              "REİSHİ MANTARI"
+            ]
+          },
+          {
+            "ID": "HAFIZA PROBLEMLERİ - UNUTKANLIK",
+            "Yok": [
+              "ALIÇ MEYVESİ",
+              "AYNI SAFA",
+              "CİVAN PERÇEMİ",
+              "ÇÖP OTU",
+              "DAMAR OTU",
+              "EKİNEZYA",
+              "ENGİNAR YAPRAĞİ",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "HİNDİBA",
+              "MEYAN KÖKÜ"
+            ],
+            "Etkili": [
+              "DEVE DİKENİ",
+              "GİNSENG",
+              "KARABAŞ OTU",
+              "SARI KANTARON",
+              "ZENCEFİL KÖKÜ",
+              "KIRMIZI PANCAR",
+              "ZEYTİN YAPRAĞİ"
+            ],
+            "Çok Etkili": [
+              "BİBERİYE",
+              "GİNKO BİLOBA",
+              "GİNSENG",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ",
+              "ZERDEÇAL KÖKÜ"
+            ],
+            "Yardimci": [
+              "COREK OTU",
+              "GİLABURU MEYVESİ",
+              "HAYIT MEYVESİ",
+              "KIRKKİLİT OTU",
+              "KUDRET NARI",
+              "REİSHİ MANTARI",
+              "YABAN MERSİNİ"
+            ]
+          },
+          {
+            "ID": "HEPATİT B-C",
+            "Yok": [
+              "ALIÇ MEYVESİ",
+              "CİVAN PERÇEMİ",
+              "ÇÖP OTU",
+              "GİLABURU MEYVESİ",
+              "GİNKO BİLOBA",
+              "HAYIT MEYVESİ",
+              "YABAN MERSİNİ",
+              "ZENCEFİL KÖKÜ"
+            ],
+            "Etkili": [
+              "BİBERİYE",
+              "EKİNEZYA",
+              "GİNSENG",
+              "KARABAŞ OTU",
+              "KUDRET NARI",
+              "DAMAR OTU",
+              "ZEYTİN YAPRAĞİ"
+            ],
+            "Çok Etkili": [
+              "AYNI SAFA",
+              "COREK OTU",
+              "DEVE DİKENİ",
+              "ENGİNAR YAPRAĞİ",
+              "HİNDİBA",
+              "KIRMIZI PANCAR",
+              "REİSHİ MANTARI",
+              "SARI KANTARON",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ",
+              "ZERDEÇAL KÖKÜ"
+            ],
+            "Yardimci": [
+              "HARNUP (KEÇİ BOYNUZU)",
+              "KIRKKİLİT OTU",
+              "MEYAN KÖKÜ"
+            ]
+          },
+          {
+            "ID": "HİPER TANSİYON",
+            "Yok": [
+              "AYNI SAFA",
+              "EKİNEZYA"
+            ],
+            "Etkili": [
+              "CİVAN PERÇEMİ",
+              "COREK OTU",
+              "ÇÖP OTU",
+              "ENGİNAR YAPRAĞİ",
+              "GİNKO BİLOBA",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "HİNDİBA",
+              "MEYAN KÖKÜ",
+              "REİSHİ MANTARI",
+              "ZENCEFİL KÖKÜ",
+              "ZERDEÇAL KÖKÜ"
+            ],
+            "Çok Etkili": [
+              "ALIÇ MEYVESİ",
+              "BİBERİYE",
+              "DAMAR OTU",
+              "GİLABURU MEYVESİ",
+              "KIRKKİLİT OTU",
+              "KIRMIZI PANCAR",
+              "SARI KANTARON",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ",
+              "YABAN MERSİNİ",
+              "ZEYTİN YAPRAĞİ"
+            ],
+            "Yardimci": [
+              "DEVE DİKENİ",
+              "GİNSENG",
+              "HAYIT MEYVESİ",
+              "KARABAŞ OTU",
+              "KUDRET NARI"
+            ]
+          },
+          {
+            "ID": "HORMON DENGESİZLİĞİ (KADIN)",
+            "Yok": [
+              "ALIÇ MEYVESİ",
+              "ÇÖP OTU",
+              "DAMAR OTU",
+              "DEVE DİKENİ",
+              "EKİNEZYA",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "KARABAŞ OTU",
+              "MEYAN KÖKÜ",
+              "REİSHİ MANTARI",
+              "YABAN MERSİNİ",
+              "ZENCEFİL KÖKÜ",
+              "ZERDEÇAL KÖKÜ"
+            ],
+            "Etkili": [
+              "CİVAN PERÇEMİ",
+              "COREK OTU",
+              "GİNSENG",
+              "KIRKKİLİT OTU",
+              "SARI KANTARON"
+            ],
+            "Çok Etkili": [
+              "AYNI SAFA",
+              "HAYIT MEYVESİ"
+            ],
+            "Yardimci": [
+              "BİBERİYE",
+              "ENGİNAR YAPRAĞİ",
+              "GİNKO BİLOBA",
+              "HİNDİBA",
+              "KIRMIZI PANCAR",
+              "KUDRET NARI",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ",
+              "ZEYTİN YAPRAĞİ"
+            ]
+          },
+          {
+            "ID": "İDRAR YOLU ENFEKSİYONLARI",
+            "Yok": [
+              "ALIÇ MEYVESİ",
+              "ENGİNAR YAPRAĞİ",
+              "GİNKO BİLOBA",
+              "GİNSENG",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "HAYIT MEYVESİ",
+              "KUDRET NARI",
+              "MEYAN KÖKÜ",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ"
+            ],
+            "Etkili": [
+              "CİVAN PERÇEMİ",
+              "DAMAR OTU",
+              "DEVE DİKENİ",
+              "KIRMIZI PANCAR",
+              "REİSHI MANTARI",
+              "ZENCEFİL KÖKÜ",
+              "ZERDEÇAL KÖKÜ"
+            ],
+            "Çok Etkili": [
+              "AYNI SAFA",
+              "BİBERİYE",
+              "COREK OTU",
+              "ÇÖP OTU",
+              "EKİNEZYA",
+              "GİLABURU MEYVESİ",
+              "HİNDİBA",
+              "KARABAŞ OTU",
+              "KIRKKİLİT OTU",
+              "SARI KANTARON",
+              "YABAN MERSİNİ",
+              "ZEYTİN YAPRAĞİ"
+            ],
+            "Yardimci": [
+              "HAYIT MEYVESİ",
+              "KUDRET NARI",
+              "MEYAN KÖKÜ",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ"
+            ]
+          },
+          {
+            "ID": "İKTİDARSIZLIK - CİNSEL İSTEKSİZLİK",
+            "Yok": [
+              "ALIÇ MEYVESİ",
+              "AYNI SAFA",
+              "ÇÖP OTU",
+              "DAMAR OTU",
+              "ENGİNAR YAPRAĞİ",
+              "GİLABURU MEYVESİ",
+              "KARABAŞ OTU"
+            ],
+            "Etkili": [
+              "COREK OTU",
+              "DEVE DİKENİ",
+              "KIRKKİLİT OTU",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ",
+              "ZERDEÇAL KÖKÜ"
+            ],
+            "Çok Etkili": [
+              "BİBERİYE",
+              "GİNKO BİLOBA",
+              "GİNSENG",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "HAYIT MEYVESİ",
+              "KUDRET NARI",
+              "SARI KANTARON",
+              "ZENCEFİL KÖKÜ"
+            ],
+            "Yardimci": [
+              "CİVAN PERÇEMİ",
+              "EKİNEZYA",
+              "HİNDİBA",
+              "KIRMIZI PANCAR",
+              "MEYAN KÖKÜ",
+              "REİSHİ MANTARI",
+              "YABAN MERSİNİ",
+              "ZEYTİN YAPRAĞİ"
+            ]
+          },
+          {
+            "ID": "İSHAL",
+            "Yok": [
+              "ALIÇ MEYVESİ",
+              "ENGİNAR YAPRAĞİ",
+              "GİNKO BİLOBA",
+              "GİNSENG",
+              "HAYIT MEYVESİ"
+            ],
+            "Etkili": [
+              "CİVAN PERÇEMİ",
+              "COREK OTU",
+              "ÇÖP OTU",
+              "EKİNEZYA",
+              "HİNDİBA",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ",
+              "ZENCEFİL KÖKÜ"
+            ],
+            "Çok Etkili": [
+              "AYNI SAFA",
+              "BİBERİYE",
+              "GİLABURU MEYVESİ",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "KARABAŞ OTU",
+              "KIRKKİLİT OTU",
+              "KUDRET NARI",
+              "MEYAN KÖKÜ",
+              "SARI KANTARON",
+              "YABAN MERSİNİ",
+              "ZERDEÇAL KÖKÜ",
+              "ZEYTİN YAPRAĞİ"
+            ],
+            "Yardimci": [
+              "DAMAR OTU",
+              "DEVE DİKENİ",
+              "REİSHİ MANTARI"
+            ]
+          },
+          {
+            "ID": "KABIZLIK",
+            "Yok": [
+              "CİVAN PERÇEMİ",
+              "EKİNEZYA",
+              "GİNKO BİLOBA",
+              "GİNSENG",
+              "HAYIT MEYVESİ",
+              "ZERDEÇAL KÖKÜ"
+            ],
+            "Etkili": [
+              "AYNI SAFA",
+              "DAMAR OTU",
+              "DEVE DİKENİ",
+              "KARABAŞ OTU",
+              "KIRKKİLİT OTU",
+              "KUDRET NARI",
+              "ZEYTİN YAPRAĞİ"
+            ],
+            "Çok Etkili": [
+              "ÇÖP OTU",
+              "ENGİNAR YAPRAĞİ",
+              "GİLABURU MEYVESİ",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "HİNDİBA",
+              "KIRMIZI PANCAR",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ",
+              "YABAN MERSİNİ"
+            ],
+            "Yardimci": [
+              "ALIÇ MEYVESİ",
+              "BİBERİYE",
+              "COREK OTU",
+              "MEYAN KÖKÜ",
+              "REİSHİ MANTARI",
+              "SARI KANTARON",
+              "ZENCEFİL KÖKÜ"
+            ]
+          },
+          {
+            "ID": "KANSER (GENEL)",
+            "Yok": [
+              "ALIÇ MEYVESİ",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "HAYIT MEYVESİ"
+            ],
+            "Etkili": [
+              "CİVAN PERÇEMİ",
+              "ENGİNAR YAPRAĞI",
+              "GİNKO BİLOBA",
+              "DAMAR OTU"
+            ],
+            "Çok Etkili": [
+              "AYNI SAFA",
+              "COREK OTU",
+              "ÇÖP OTU",
+              "DEVE DİKENİ",
+              "EKİNEZYA",
+              "GİNSENG",
+              "HİNDİBA",
+              "KARABAŞ OTU",
+              "KIRKKİLİT OTU",
+              "KIRMIZI PANCAR",
+              "KUDRET NARI",
+              "MEYAN KÖKÜ",
+              "REİSHİ MANTARI",
+              "SARI KANTARON",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ",
+              "YABAN MERSİNİ",
+              "ZENCEFİL KÖKÜ",
+              "ZERDEÇAL KÖKÜ",
+              "ZEYTİN YAPRAĞİ"
+            ],
+            "Yardimci": [
+              "BİBERİYE"
+            ]
+          },
+          {
+            "ID": "KARACİĞER HASTALIKLARI - SİROZ",
+            "Yok": [
+              "ALIÇ MEYVESİ",
+              "CİVAN PERÇEMİ",
+              "GİLABURU MEYVESİ",
+              "HAYIT MEYVESİ"
+            ],
+            "Etkili": [
+              "ÇÖP OTU",
+              "EKİNEZYA",
+              "GİNSENG",
+              "KARABAŞ OTU",
+              "YABAN MERSİNİ",
+              "ZENCEFİL KÖKÜ"
+            ],
+            "Çok Etkili": [
+              "AYNI SAFA",
+              "COREK OTU",
+              "DAMAR OTU",
+              "DEVE DİKENİ",
+              "ENGİNAR YAPRAĞİ",
+              "HİNDİBA",
+              "KIRMIZI PANCAR",
+              "KUDRET NARI",
+              "REİSHİ MANTARI",
+              "SARI KANTARON",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ",
+              "ZERDEÇAL KÖKÜ",
+              "ZEYTİN YAPRAĞİ"
+            ],
+            "Yardimci": [
+              "BİBERİYE",
+              "GİNKO BİLOBA",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "KIRKKİLİT OTU",
+              "MEYAN KÖKÜ"
+            ]
+          },
+          {
+            "ID": "KEMOTERAPİ UYGULAMALARI",
+            "Yok": [
+              "ALIÇ MEYVESİ",
+              "BİBERİYE",
+              "HAYIT MEYVESİ"
+            ],
+            "Etkili": [
+              "ÇÖP OTU",
+              "ENGİNAR YAPRAĞİ",
+              "GİNKO BİLOBA",
+              "KARABAŞ OTU",
+              "KIRKKİLİT OTU",
+              "MEYAN KÖKÜ",
+              "SARI KANTARON",
+              "YABAN MERSİNİ",
+              "ZENCEFİL KÖKÜ"
+            ],
+            "Çok Etkili": [
+              "AYNI SAFA",
+              "COREK OTU",
+              "DEVE DİKENİ",
+              "EKİNEZYA",
+              "GİNSENG",
+              "HİNDİBA",
+              "KIRMIZI PANCAR",
+              "KUDRET NARI",
+              "REİSHİ MANTARI",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ",
+              "ZERDEÇAL KÖKÜ",
+              "ZEYTİN YAPRAĞİ"
+            ],
+            "Yardimci": [
+              "CİVAN PERÇEMİ",
+              "DAMAR OTU"
+            ]
+          },
+          {
+            "ID": "KISIRLIK (KADIN)",
+            "Yok": [
+              "ALIÇ MEYVESİ",
+              "AYNI SAFA",
+              "BİBERİYE",
+              "ÇÖP OTU",
+              "DAMAR OTU",
+              "EKİNEZYA",
+              "ENGİNAR YAPRAĞİ",
+              "GİLABURU MEYVESİ",
+              "HİNDİBA",
+              "KARABAŞ OTU",
+              "ZEYTİN YAPRAĞİ"
+            ],
+            "Etkili": [
+              "CİVAN PERÇEMİ",
+              "SARI KANTARON",
+              "ZENCEFİL KÖKÜ"
+            ],
+            "Çok Etkili": [
+              "GİNSENG",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "HAYIT MEYVESİ",
+              "KIRKKİLİT OTU",
+              "KIRMIZI PANCAR",
+              "KUDRET NARI"
+            ],
+            "Yardimci": [
+              "COREK OTU",
+              "DEVE DİKENİ",
+              "MEYAN KÖKÜ",
+              "REİSHİ MANTARI",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ",
+              "YABAN MERSİNİ",
+              "ZERDEÇAL KÖKÜ"
+            ]
+          },
+          {
+            "ID": "KOLESTEROL - YÜKSEK",
+            "Yok": [
+              "HAYIT MEYVESİ"
+            ],
+            "Etkili": [
+              "BİBERİYE",
+              "CİVAN PERÇEMİ",
+              "ÇÖP OTU",
+              "GİNKO BİLOBA",
+              "GİNSENG",
+              "KIRKKİLİT OTU",
+              "SARI KANTARON"
+            ],
+            "Çok Etkili": [
+              "ALIÇ MEYVESİ",
+              "COREK OTU",
+              "DAMAR OTU",
+              "DEVE DİKENİ",
+              "ENGİNAR YAPRAĞİ",
+              "GİLABURU MEYVESİ",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "HİNDİBA",
+              "KIRMIZI PANCAR",
+              "KUDRET NARI",
+              "MEYAN KÖKÜ",
+              "REİSHİ MANTARI",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ",
+              "YABAN MERSİNİ",
+              "ZERDEÇAL KÖKÜ",
+              "ZEYTİN YAPRAĞİ"
+            ],
+            "Yardimci": [
+              "AYNI SAFA",
+              "EKİNEZYA",
+              "KARABAŞ OTU",
+              "ZENCEFİL KÖKÜ"
+            ]
+          },
+          {
+            "ID": "MİDE SORUNLARI - ÜLSER - GASTRİT",
+            "Yok": [
+              "ALIÇ MEYVESİ",
+              "GİNKO BİLOBA",
+              "HAYIT MEYVESİ"
+            ],
+            "Etkili": [
+              "CİVAN PERÇEMİ",
+              "ÇÖP OTU",
+              "ENGİNAR YAPRAĞİ",
+              "KIRKKİLİT OTU",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ",
+              "ZEYTİN YAPRAĞİ"
+            ],
+            "Çok Etkili": [
+              "AYNI SAFA",
+              "BİBERİYE",
+              "COREK OTU",
+              "EKİNEZYA",
+              "GİLABURU MEYVESİ",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "HİNDİBA",
+              "KARABAŞ OTU",
+              "KUDRET NARI",
+              "MEYAN KÖKÜ",
+              "SARI KANTARON",
+              "YABAN MERSİNİ",
+              "ZENCEFİL KÖKÜ",
+              "ZERDEÇAL KÖKÜ"
+            ],
+            "Yardimci": [
+              "DAMAR OTU",
+              "DEVE DİKENİ",
+              "GİNSENG",
+              "KIRMIZI PANCAR",
+              "REİSHİ MANTARI"
+            ]
+          },
+          {
+            "ID": "MS HASTALIĞI",
+            "Yok": [
+              "ALIÇ MEYVESİ",
+              "CİVAN PERÇEMİ",
+              "HAYIT MEYVESİ",
+              "MEYAN KÖKÜ"
+            ],
+            "Etkili": [
+              "BİBERİYE",
+              "ÇÖP OTU",
+              "DEVE DİKENİ",
+              "EKİNEZYA",
+              "GİLABURU MEYVESİ",
+              "HİNDİBA",
+              "KARABAŞ OTU",
+              "ZENCEFİL KÖKÜ"
+            ],
+            "Çok Etkili": [
+              "COREK OTU",
+              "DAMAR OTU",
+              "GİNKO BİLOBA",
+              "GİNSENG",
+              "KIRKKİLİT OTU",
+              "KIRMIZI PANCAR",
+              "KUDRET NARI",
+              "REİSHİ MANTARI",
+              "SARI KANTARON",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ",
+              "YABAN MERSİNİ",
+              "ZERDEÇAL KÖKÜ",
+              "ZEYTİN YAPRAĞİ"
+            ],
+            "Yardimci": [
+              "AYNI SAFA",
+              "ENGİNAR YAPRAĞİ",
+              "HARNUP (KEÇİ BOYNUZU)"
+            ]
+          },
+          {
+            "ID": "PROSTAT HASTALIKLARI",
+            "Yok": [
+              "ALIÇ MEYVESİ",
+              "ENGİNAR YAPRAĞİ",
+              "GİLABURU MEYVESİ",
+              "GİNKO BİLOBA"
+            ],
+            "Etkili": [
+              "BİBERİYE",
+              "ÇÖP OTU",
+              "DAMAR OTU",
+              "DEVE DİKENİ",
+              "EKİNEZYA",
+              "HAYIT MEYVESİ",
+              "KARABAŞ OTU",
+              "KIRMIZI PANCAR",
+              "REİSHİ MANTARI",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ",
+              "ZENCEFİL KÖKÜ"
+            ],
+            "Çok Etkili": [
+              "AYNI SAFA",
+              "COREK OTU",
+              "GİNSENG",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "HİNDİBA",
+              "KIRKKİLİT OTU",
+              "KUDRET NARI",
+              "SARI KANTARON",
+              "YABAN MERSİNİ",
+              "ZERDEÇAL KÖKÜ",
+              "ZEYTİN YAPRAĞİ"
+            ],
+            "Yardimci": [
+              "CİVAN PERÇEMİ",
+              "MEYAN KÖKÜ"
+            ]
+          },
+          {
+            "ID": "ROMATİZMA - ROMATOİD ARTRİT",
+            "Yok": [
+              "ALIÇ MEYVESİ",
+              "DAMAR OTU",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "HAYIT MEYVESİ"
+            ],
+            "Etkili": [
+              "ÇÖP OTU",
+              "DEVE DİKENİ",
+              "GİNSENG",
+              "KIRMIZI PANCAR"
+            ],
+            "Çok Etkili": [
+              "AYNI SAFA",
+              "BİBERİYE",
+              "CİVAN PERÇEMİ",
+              "COREK OTU",
+              "EKİNEZYA",
+              "HİNDİBA",
+              "KARABAŞ OTU",
+              "KIRKKİLİT OTU",
+              "KUDRET NARI",
+              "MEYAN KÖKÜ",
+              "REİSHİ MANTARI",
+              "SARI KANTARON",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ",
+              "YABAN MERSİNİ",
+              "ZENCEFİL KÖKÜ",
+              "ZERDEÇAL KÖKÜ",
+              "ZEYTİN YAPRAĞİ"
+            ],
+            "Yardimci": [
+              "ENGİNAR YAPRAĞİ",
+              "GİLABURU MEYVESİ",
+              "GİNKO BİLOBA"
+            ]
+          },
+          {
+            "ID": "SAFRA HASTALIKLARI",
+            "Yok": [
+              "ALIÇ MEYVESİ",
+              "GİNKO BİLOBA",
+              "GİNSENG",
+              "HAYIT MEYVESİ"
+            ],
+            "Etkili": [
+              "BİBERİYE",
+              "DAMAR OTU",
+              "DEVE DİKENİ",
+              "KARABAŞ OTU",
+              "KIRKKİLİT OTU",
+              "SARI KANTARON",
+              "ZENCEFİL KÖKÜ"
+            ],
+            "Çok Etkili": [
+              "AYNI SAFA",
+              "COREK OTU",
+              "ÇÖP OTU",
+              "ENGİNAR YAPRAĞİ",
+              "GİLABURU MEYVESİ",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "HİNDİBA",
+              "KIRMIZI PANCAR",
+              "KUDRET NARI",
+              "REİSHİ MANTARI",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ",
+              "YABAN MERSİNİ",
+              "ZERDEÇAL KÖKÜ",
+              "ZEYTİN YAPRAĞİ"
+            ],
+            "Yardimci": [
+              "CİVAN PERÇEMİ",
+              "EKİNEZYA",
+              "MEYAN KÖKÜ"
+            ]
+          },
+          {
+            "ID": "SEDEF HASTALIĞI",
+            "Yok": [
+              "ALIÇ MEYVESİ",
+              "ENGİNAR YAPRAĞİ",
+              "GİLABURU MEYVESİ",
+              "GİNSENG",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "HAYIT MEYVESİ"
+            ],
+            "Etkili": [
+              "ÇÖP OTU",
+              "DAMAR OTU",
+              "MEYAN KÖKÜ",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ",
+              "ZENCEFİL KÖKÜ"
+            ],
+            "Çok Etkili": [
+              "AYNI SAFA",
+              "BİBERİYE",
+              "CİVAN PERÇEMİ",
+              "COREK OTU",
+              "EKİNEZYA",
+              "KARABAŞ OTU",
+              "KIRKKİLİT OTU",
+              "REİSHİ MANTARI",
+              "SARI KANTARON",
+              "YABAN MERSİNİ",
+              "ZERDEÇAL KÖKÜ",
+              "ZEYTİN YAPRAĞİ"
+            ],
+            "Yardimci": [
+              "DEVE DİKENİ",
+              "GİNKO BİLOBA",
+              "HİNDİBA",
+              "KIRMIZI PANCAR",
+              "KUDRET NARI"
+            ]
+          },
+          {
+            "ID": "SPERM EKSİKLİĞİ - TESTOSTERON",
+            "Yok": [
+              "ALIÇ MEYVESİ",
+              "AYNI SAFA",
+              "ÇÖP OTU",
+              "DAMAR OTU",
+              "ENGİNAR YAPRAĞİ"
+            ],
+            "Etkili": [
+              "DEVE DİKENİ",
+              "GİNKO BİLOBA",
+              "REİSHİ MANTARI",
+              "ZERDEÇAL KÖKÜ"
+            ],
+            "Çok Etkili": [
+              "COREK OTU",
+              "GİNSENG",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "HAYIT MEYVESİ",
+              "KIRKKİLİT OTU",
+              "KIRMIZI PANCAR",
+              "KUDRET NARI",
+              "SARI KANTARON",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ",
+              "ZENCEFİL KÖKÜ"
+            ],
+            "Yardimci": [
+              "BİBERİYE",
+              "CİVAN PERÇEMİ",
+              "EKİNEZYA",
+              "GİLABURU MEYVESİ",
+              "HİNDİBA",
+              "KARABAŞ OTU",
+              "MEYAN KÖKÜ",
+              "YABAN MERSİNİ",
+              "ZEYTİN YAPRAĞİ"
+            ]
+          },
+          {
+            "ID": "ÜRTİKER - KAŞINTI",
+            "Yok": [
+              "ALIÇ MEYVESİ",
+              "ENGİNAR YAPRAĞİ",
+              "GİNKO BİLOBA",
+              "GİNSENG",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "HAYIT MEYVESİ"
+            ],
+            "Etkili": [
+              "ÇÖP OTU",
+              "DAMAR OTU",
+              "KIRMIZI PANCAR",
+              "ZENCEFİL KÖKÜ"
+            ],
+            "Çok Etkili": [
+              "AYNI SAFA",
+              "BİBERİYE",
+              "CİVAN PERÇEMİ",
+              "COREK OTU",
+              "EKİNEZYA",
+              "GİLABURU MEYVESİ",
+              "HİNDİBA",
+              "KARABAŞ OTU",
+              "KIRKKİLİT OTU",
+              "KUDRET NARI",
+              "MEYAN KÖKÜ",
+              "REİSHİ MANTARI",
+              "SARI KANTARON",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ",
+              "YABAN MERSİNİ",
+              "ZERDEÇAL KÖKÜ",
+              "ZEYTİN YAPRAĞİ"
+            ],
+            "Yardimci": [
+              "DEVE DİKENİ"
+            ]
+          },
+          {
+            "ID": "YORGUNLUK - HALSSİZLİK - ENERJİ EKSİĞİ",
+            "Yok": [],
+            "Etkili": [
+              "AYNI SAFA",
+              "ÇÖP OTU",
+              "DAMAR OTU",
+              "DEVE DİKENİ",
+              "ENGİNAR YAPRAĞİ",
+              "GİLABURU MEYVESİ"
+            ],
+            "Çok Etkili": [
+              "BİBERİYE",
+              "COREK OTU",
+              "EKİNEZYA",
+              "GİNKO BİLOBA",
+              "GİNSENG",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "HAYIT MEYVESİ",
+              "HİNDİBA",
+              "KARABAŞ OTU",
+              "KIRKKİLİT OTU",
+              "KIRMIZI PANCAR",
+              "KUDRET NARI",
+              "MEYAN KÖKÜ",
+              "REİSHİ MANTARI",
+              "SARI KANTARON",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ",
+              "YABAN MERSİNİ",
+              "ZENCEFİL KÖKÜ",
+              "ZERDEÇAL KÖKÜ",
+              "ZEYTİN YAPRAĞİ"
+            ],
+            "Yardimci": [
+              "ALIÇ MEYVESİ",
+              "CİVAN PERÇEMİ"
+            ]
+          },
+          {
+            "ID": "VÜCUT DİRENCİ - BAĞIŞIKLIK SİSTEMİ",
+            "Yok": [],
+            "Etkili": [
+              "CİVAN PERÇEMİ",
+              "ÇÖP OTU",
+              "DAMAR OTU",
+              "ENGİNAR YAPRAĞİ",
+              "GİNKO BİLOBA",
+              "HAYIT MEYVESİ"
+            ],
+            "Çok Etkili": [
+              "AYNI SAFA",
+              "BİBERİYE",
+              "COREK OTU",
+              "DEVE DİKENİ",
+              "EKİNEZYA",
+              "GİLABURU MEYVESİ",
+              "GİNSENG",
+              "HARNUP (KEÇİ BOYNUZU)",
+              "HİNDİBA",
+              "KARABAŞ OTU",
+              "KIRKKİLİT OTU",
+              "KIRMIZI PANCAR",
+              "KUDRET NARI",
+              "MEYAN KÖKÜ",
+              "REİSHİ MANTARI",
+              "SARI KANTARON",
+              "SİYAH ÜZÜM ÇEKİRDEĞİ",
+              "YABAN MERSİNİ",
+              "ZENCEFİL KÖKÜ",
+              "ZERDEÇAL KÖKÜ",
+              "ZEYTİN YAPRAĞİ"
+            ],
+            "Yardimci": [
+              "ALIÇ MEYVESİ"
+            ]
+          }
+        ];
+
+        const conditionSelect = document.getElementById('condition-select');
+        const resultsDiv = document.getElementById('results');
+        const cokEtkiliList = document.getElementById('cok-etkili-list');
+        const etkiliList = document.getElementById('etkili-list');
+        const yardimciList = document.getElementById('yardimci-list');
+        const yokList = document.getElementById('yok-list');
+
+        // Populate the dropdown
+        healthData.forEach(condition => {
+            const option = document.createElement('option');
+            option.value = condition.ID;
+            option.textContent = condition.ID;
+            conditionSelect.appendChild(option);
+        });
+
+        // Event listener for dropdown change
+        conditionSelect.addEventListener('change', (event) => {
+            const selectedConditionId = event.target.value;
+            displayConditionData(selectedConditionId);
+        });
+
+        // Function to display data for the selected condition
+        function displayConditionData(conditionId) {
+            // Clear previous results
+            cokEtkiliList.innerHTML = '';
+            etkiliList.innerHTML = '';
+            yardimciList.innerHTML = '';
+            yokList.innerHTML = '';
+
+            if (conditionId === "") {
+                resultsDiv.classList.add('hidden');
+                return;
+            }
+
+            const selectedCondition = healthData.find(condition => condition.ID === conditionId);
+
+            if (selectedCondition) {
+                // Populate lists
+                selectedCondition['Çok Etkili'].forEach(item => {
+                    const li = document.createElement('li');
+                    li.textContent = item;
+                    cokEtkiliList.appendChild(li);
+                });
+
+                selectedCondition['Etkili'].forEach(item => {
+                    const li = document.createElement('li');
+                    li.textContent = item;
+                    etkiliList.appendChild(li);
+                });
+
+                selectedCondition['Yardimci'].forEach(item => {
+                    const li = document.createElement('li');
+                    li.textContent = item;
+                    yardimciList.appendChild(li);
+                });
+
+                selectedCondition['Yok'].forEach(item => {
+                    const li = document.createElement('li');
+                    li.textContent = item;
+                    yokList.appendChild(li);
+                });
+
+                resultsDiv.classList.remove('hidden');
+            } else {
+                resultsDiv.classList.add('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
+
